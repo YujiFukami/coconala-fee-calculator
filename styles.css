@@ -234,6 +234,15 @@ input[type="number"],
   color: var(--primary-dark);
 }
 
+.special-amount-button {
+  grid-column: 1 / -1;
+  min-height: 32px;
+  background: #fff5dd !important;
+  border-color: #d58a20 !important;
+  color: #8a4b08 !important;
+  font-size: 0.9rem;
+}
+
 .number-pad {
   display: grid;
   grid-template-columns: repeat(10, minmax(0, 1fr));
@@ -364,7 +373,32 @@ input[type="number"],
   margin: 8px 0;
   font-size: clamp(1.45rem, 2.6vw, 2rem);
   line-height: 1.15;
-  word-break: keep-all;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.result-card strong.amount-size-l {
+  font-size: clamp(1.24rem, 2.1vw, 1.62rem);
+}
+
+.result-card strong.amount-size-xl {
+  font-size: clamp(1.02rem, 1.75vw, 1.34rem);
+}
+
+.result-card strong.amount-size-xxl {
+  font-size: clamp(0.88rem, 1.45vw, 1.08rem);
+}
+
+.bar-total strong.amount-size-l {
+  font-size: 0.95em;
+}
+
+.bar-total strong.amount-size-xl,
+.bar-total strong.amount-size-xxl {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.88em;
+  overflow-wrap: anywhere;
 }
 
 .table-wrap {
@@ -692,6 +726,10 @@ summary {
   .amount-tools {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 7px;
+  }
+
+  .special-amount-button {
+    grid-column: 1 / -1;
   }
 
   .number-pad {

@@ -119,6 +119,9 @@
     document.querySelectorAll("[data-amount-delta]").forEach((button) => {
       button.addEventListener("click", () => adjustAmount(Number(button.dataset.amountDelta)));
     });
+    document.querySelectorAll("[data-amount-set]").forEach((button) => {
+      button.addEventListener("click", () => setSpecialAmount(Number(button.dataset.amountSet)));
+    });
     document.querySelectorAll("[data-digit]").forEach((button) => {
       button.addEventListener("click", () => appendDigit(button.dataset.digit));
     });
@@ -147,6 +150,11 @@
     const base = Number.isFinite(current) ? current : 0;
     const next = Math.max(0, Math.round(base + delta));
     setAmountValue(next);
+    calculateAndRender();
+  }
+
+  function setSpecialAmount(amount) {
+    setAmountValue(amount);
     calculateAndRender();
   }
 
@@ -276,17 +284,31 @@
   }
 
   function renderResult(result, options) {
-    refs.buyerTotalCard.textContent = yen(result.buyerTotal);
-    refs.feeBaseCard.textContent = yen(result.feeBaseAmount);
-    refs.sellerFeeCard.textContent = yen(result.sellerFee);
-    refs.sellerNetCard.textContent = yen(result.sellerNet);
-    refs.buyerTotalLabel.textContent = yen(result.buyerTotal);
-    refs.feeBaseLabel.textContent = yen(result.feeBaseAmount);
+    setAmountText(refs.buyerTotalCard, result.buyerTotal);
+    setAmountText(refs.feeBaseCard, result.feeBaseAmount);
+    setAmountText(refs.sellerFeeCard, result.sellerFee);
+    setAmountText(refs.sellerNetCard, result.sellerNet);
+    setAmountText(refs.buyerTotalLabel, result.buyerTotal);
+    setAmountText(refs.feeBaseLabel, result.feeBaseAmount);
 
     renderTable(result, options);
     renderBars(result);
     renderExplanation(result, options);
     renderFormula(options);
+  }
+
+  function setAmountText(element, value) {
+    const text = yen(value);
+    element.textContent = text;
+    element.classList.remove("amount-size-l", "amount-size-xl", "amount-size-xxl");
+
+    if (text.length >= 24) {
+      element.classList.add("amount-size-xxl");
+    } else if (text.length >= 20) {
+      element.classList.add("amount-size-xl");
+    } else if (text.length >= 16) {
+      element.classList.add("amount-size-l");
+    }
   }
 
   function renderTable(result, options) {
