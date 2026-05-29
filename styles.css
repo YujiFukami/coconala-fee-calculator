@@ -234,15 +234,6 @@ input[type="number"],
   color: var(--primary-dark);
 }
 
-.special-amount-button {
-  grid-column: 1 / -1;
-  min-height: 32px;
-  background: #fff5dd !important;
-  border-color: #d58a20 !important;
-  color: #8a4b08 !important;
-  font-size: 0.9rem;
-}
-
 .number-pad {
   display: grid;
   grid-template-columns: repeat(10, minmax(0, 1fr));
@@ -270,6 +261,30 @@ input[type="number"],
   background: var(--primary);
   border-color: var(--primary-dark);
   color: #ffffff;
+}
+
+.special-amount-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+.special-amount-button {
+  min-height: 28px;
+  width: auto;
+  border: 1px solid #d58a20;
+  border-radius: 4px;
+  padding: 2px 8px;
+  background: #fff5dd;
+  color: #8a4b08;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.special-amount-button:hover {
+  border-color: #a96910;
+  color: #6f3900;
 }
 
 .error-message {
@@ -728,8 +743,8 @@ summary {
     gap: 7px;
   }
 
-  .special-amount-button {
-    grid-column: 1 / -1;
+  .special-amount-row {
+    justify-content: flex-end;
   }
 
   .number-pad {

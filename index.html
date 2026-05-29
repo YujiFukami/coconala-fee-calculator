@@ -50,7 +50,6 @@
               <button type="button" data-amount-delta="100">+百</button>
               <button type="button" data-amount-delta="1000">+千</button>
               <button type="button" data-amount-delta="10000">+1万</button>
-              <button class="special-amount-button" type="button" data-amount-set="5000000000000000">5000兆円</button>
             </div>
             <div class="number-pad" aria-label="数字入力">
               <button type="button" data-digit="1">1</button>
@@ -67,6 +66,9 @@
             <div class="number-pad-actions">
               <button type="button" data-number-action="clear">全消去</button>
               <button type="button" data-number-action="backspace">1字消す</button>
+            </div>
+            <div class="special-amount-row">
+              <button class="special-amount-button" type="button" data-amount-set="5000000000000000">5000兆円</button>
             </div>
             <p class="field-note" id="amount-note">提示する税抜ベースの見積額</p>
             <p class="error-message" id="amount-error" role="alert"></p>
