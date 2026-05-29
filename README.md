@@ -2,6 +2,10 @@
 
 ココナラ通常サービス向けの参考計算Webアプリです。
 
+## 公開URL
+
+https://coconala-fee-calculator.vercel.app/
+
 ## 起動方法
 
 `index.html` をブラウザで開くと動作します。バックエンドやビルド手順は不要です。
