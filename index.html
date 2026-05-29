@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ココナラ見積・手取り・予算逆算ツール</title>
+  <meta name="description" content="ココナラ通常サービス向けの見積額、購入者支払総額、出品者手取りを参考計算するWebツールです。">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="title-block">
+        <h1>ココナラ見積・手取り・予算逆算ツール</h1>
+        <p>通常サービス向け <span aria-hidden="true">|</span> 参考計算ツール</p>
+      </div>
+      <div class="brand-links" aria-label="関連リンク">
+        <a class="brand-logo-link" href="https://www.softex-celware.com/" target="_blank" rel="noreferrer">
+          <img src="softex-celwareロゴ 透過 横長.png" alt="Softex Celware">
+        </a>
+        <a class="profile-link" href="https://coconala.com/users/737430" target="_blank" rel="noreferrer">
+          ココナラ出品者: いき
+        </a>
+      </div>
+    </header>
+
+    <nav class="mode-tabs" aria-label="計算モード">
+      <button class="mode-tab is-active" type="button" data-mode="fromEstimate">見積額から計算</button>
+      <button class="mode-tab" type="button" data-mode="fromBudget">予算から逆算</button>
+      <button class="mode-tab" type="button" data-mode="fromNet">手取りから逆算</button>
+    </nav>
+
+    <main>
+      <section class="workspace">
+        <form class="input-panel" id="calculator-form" novalidate>
+          <h2>入力条件</h2>
+
+          <div class="field-group primary-input">
+            <label for="amount-input" id="amount-label">見積額</label>
+            <div class="money-input">
+              <input id="amount-input" name="amount" inputmode="numeric" autocomplete="off" value="50,000">
+              <span>円</span>
+            </div>
+            <div class="amount-tools" aria-label="金額を増減">
+              <button type="button" data-amount-delta="-10000">-1万</button>
+              <button type="button" data-amount-delta="-1000">-千</button>
+              <button type="button" data-amount-delta="-100">-百</button>
+              <button type="button" data-amount-delta="100">+百</button>
+              <button type="button" data-amount-delta="1000">+千</button>
+              <button type="button" data-amount-delta="10000">+1万</button>
+            </div>
+            <div class="number-pad" aria-label="数字入力">
+              <button type="button" data-digit="1">1</button>
+              <button type="button" data-digit="2">2</button>
+              <button type="button" data-digit="3">3</button>
+              <button type="button" data-digit="4">4</button>
+              <button type="button" data-digit="5">5</button>
+              <button type="button" data-digit="6">6</button>
+              <button type="button" data-digit="7">7</button>
+              <button type="button" data-digit="8">8</button>
+              <button type="button" data-digit="9">9</button>
+              <button type="button" data-digit="0">0</button>
+            </div>
+            <div class="number-pad-actions">
+              <button type="button" data-number-action="clear">全消去</button>
+              <button type="button" data-number-action="backspace">1字消す</button>
+            </div>
+            <p class="field-note" id="amount-note">提示する税抜ベースの見積額</p>
+            <p class="error-message" id="amount-error" role="alert"></p>
+          </div>
+
+          <fieldset class="field-group">
+            <legend>消費税の扱い</legend>
+            <label class="choice">
+              <input type="radio" name="taxMode" value="none">
+              <span>消費税なし（個人想定）</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="taxMode" value="taxable" checked>
+              <span>消費税あり（事業者想定）</span>
+            </label>
+          </fieldset>
+
+          <div class="settings-grid" aria-label="各種設定">
+            <label>
+              <span>購入者手数料</span>
+              <input id="buyer-fee-rate" name="buyerFeeRate" type="number" min="0" max="100" step="0.1" value="5.5">
+            </label>
+            <label>
+              <span>出品者手数料</span>
+              <input id="seller-fee-rate" name="sellerFeeRate" type="number" min="0" max="100" step="0.1" value="22">
+            </label>
+            <label>
+              <span>消費税率</span>
+              <input id="tax-rate" name="taxRate" type="number" min="0" max="100" step="0.1" value="10">
+            </label>
+          </div>
+
+          <fieldset class="field-group">
+            <legend>端数処理</legend>
+            <label class="choice">
+              <input type="radio" name="roundingMode" value="round" checked>
+              <span>四捨五入</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="roundingMode" value="floor">
+              <span>切り捨て</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="roundingMode" value="ceil">
+              <span>切り上げ</span>
+            </label>
+            <p class="field-note">ココナラ公式ヘルプでは、購入者サービス手数料・販売時手数料ともに小数点第一位を四捨五入と説明されています。通常は「四捨五入」を選んでください。</p>
+          </fieldset>
+
+          <div class="form-actions">
+            <button class="secondary-button" type="button" id="reset-button">条件をリセット</button>
+          </div>
+
+          <p class="mini-notice">入力変更に合わせて自動計算します。※実際の請求額と1円差が出る可能性があります。</p>
+        </form>
+
+        <section class="results-panel" aria-live="polite">
+          <div class="section-heading">
+            <h2>計算結果（概要）</h2>
+            <p id="mode-summary">見積額から、お客様支払総額と出品者手取りを計算しています。</p>
+          </div>
+
+          <div class="result-cards">
+            <article class="result-card">
+              <span>お客様支払総額</span>
+              <strong id="buyer-total-card">0円</strong>
+              <small>お客様が支払う想定総額</small>
+            </article>
+            <article class="result-card">
+              <span>手数料計算対象額</span>
+              <strong id="fee-base-card">0円</strong>
+              <small>税込または見積額そのもの</small>
+            </article>
+            <article class="result-card">
+              <span>販売時手数料</span>
+              <strong id="seller-fee-card">0円</strong>
+              <small>出品者側から差し引かれる金額</small>
+            </article>
+            <article class="result-card accent">
+              <span>出品者手取り</span>
+              <strong id="seller-net-card">0円</strong>
+              <small>出品者の受取額</small>
+            </article>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>項目</th>
+                  <th>金額</th>
+                  <th>計算式（参考）</th>
+                  <th>備考</th>
+                </tr>
+              </thead>
+              <tbody id="breakdown-table"></tbody>
+            </table>
+          </div>
+
+          <div class="copy-actions">
+            <button class="secondary-button" type="button" id="copy-result">結果をコピー</button>
+            <button class="secondary-button" type="button" id="copy-explanation">説明文をコピー</button>
+          </div>
+        </section>
+      </section>
+
+      <section class="bars-grid" aria-label="図解エリア">
+        <article class="bar-card">
+          <h2>A. お客様支払総額の内訳</h2>
+          <div class="stacked-bar" id="buyer-total-bar"></div>
+          <div class="bar-legend" id="buyer-total-legend"></div>
+          <p class="bar-total">お客様支払総額 <strong id="buyer-total-label">0円</strong></p>
+        </article>
+
+        <article class="bar-card">
+          <h2>B. サービス価格の内訳</h2>
+          <div class="stacked-bar" id="seller-net-bar"></div>
+          <div class="bar-legend" id="seller-net-legend"></div>
+          <p class="bar-total">手数料計算対象額 <strong id="fee-base-label">0円</strong></p>
+        </article>
+      </section>
+
+      <section class="details-grid">
+        <details open>
+          <summary>計算式</summary>
+          <div class="details-body" id="formula-panel"></div>
+        </details>
+        <details open>
+          <summary>わかりやすい説明</summary>
+          <div class="details-body">
+            <p id="seller-explanation"></p>
+            <p id="buyer-explanation"></p>
+          </div>
+        </details>
+        <details open>
+          <summary>公式ヘルプリンク</summary>
+          <div class="details-body links-list">
+            <p class="basis-note">通常サービスは購入者サービス手数料5.5%、販売時手数料22%を基準にしています。課税事業者登録がある場合は、消費税を含むサービス価格から手数料が計算されます。</p>
+            <a href="https://coconala-support.zendesk.com/hc/ja/articles/29004583450777" target="_blank" rel="noreferrer">サービス購入時の消費税の有無について</a>
+            <a href="https://coconala-support.zendesk.com/hc/ja/articles/900005462403" target="_blank" rel="noreferrer">サービス手数料について</a>
+            <a href="https://coconala-support.zendesk.com/hc/ja/articles/230180287" target="_blank" rel="noreferrer">販売時の手数料について</a>
+          </div>
+        </details>
+      </section>
+
+      <section class="site-links" aria-label="運営リンク">
+        <a href="https://www.softex-celware.com/" target="_blank" rel="noreferrer">
+          <img src="softex-celwareロゴ 透過 横長.png" alt="Softex Celware">
+        </a>
+        <a href="https://coconala.com/users/737430" target="_blank" rel="noreferrer">ココナラ出品者ページ: いき</a>
+      </section>
+
+      <section class="notice-box" aria-label="注意事項">
+        <strong>注意事項</strong>
+        <p>※本ツールは、ココナラ公式ヘルプに記載された料率をもとにした参考計算ツールです。</p>
+        <p>※実際の請求額・売上金額は、ココナラ側の最新仕様、端数処理、有料オプション・おひねり・分割決済などにより、1円単位で差異が出る場合があります。</p>
+        <p>※最終的な金額は、ココナラの見積画面・購入画面・売上管理画面で必ず確認してください。</p>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/calculator.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
