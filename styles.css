@@ -24,6 +24,12 @@ body {
   line-height: 1.6;
 }
 
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
 button,
 input {
   font: inherit;
@@ -135,6 +141,12 @@ main {
   grid-template-columns: minmax(320px, 0.9fr) minmax(520px, 1.8fr);
   gap: 14px;
   align-items: stretch;
+}
+
+.workspace > *,
+.bars-grid > *,
+.details-grid > * {
+  min-width: 0;
 }
 
 .input-panel,
@@ -605,7 +617,8 @@ summary {
 
 @media (max-width: 720px) {
   .app-shell {
-    padding: 10px;
+    width: 100%;
+    padding: 8px;
   }
 
   .app-header,
@@ -613,19 +626,53 @@ summary {
     display: grid;
   }
 
+  .app-header {
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .app-header h1 {
+    font-size: 1.14rem;
+  }
+
   .brand-links {
     justify-content: start;
+    gap: 8px;
+  }
+
+  .brand-logo-link img,
+  .site-links img {
+    width: min(180px, 58vw);
+    max-height: 38px;
+  }
+
+  .profile-link {
+    font-size: 0.92rem;
+  }
+
+  .mode-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: visible;
   }
 
   .mode-tab {
-    min-width: 150px;
-    padding: 10px 14px;
+    min-width: 0;
+    padding: 10px 6px;
+    border-right: 1px solid var(--line);
+    font-size: 0.86rem;
+    line-height: 1.35;
+    white-space: normal;
   }
 
   .input-panel,
   .results-panel,
   .bar-card {
-    padding: 14px;
+    padding: 12px;
+  }
+
+  .field-group {
+    padding: 12px;
   }
 
   .settings-grid,
@@ -643,11 +690,22 @@ summary {
   }
 
   .amount-tools {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
   }
 
   .number-pad {
     grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .amount-tools button,
+  .number-pad button {
+    min-height: 42px;
+  }
+
+  .number-pad-actions {
+    grid-template-columns: 1fr 1fr;
   }
 
   .choice {
@@ -657,5 +715,87 @@ summary {
 
   .bar-segment {
     font-size: 0.78rem;
+  }
+
+  .table-wrap {
+    overflow: visible;
+    border: 0;
+  }
+
+  table,
+  thead,
+  tbody,
+  tr,
+  td {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+
+  table {
+    background: transparent;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    margin-bottom: 10px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: #ffffff;
+    overflow: hidden;
+  }
+
+  td {
+    display: grid;
+    grid-template-columns: 7.5em minmax(0, 1fr);
+    gap: 8px;
+    border-bottom: 1px solid var(--line);
+    padding: 8px 10px;
+    text-align: left;
+  }
+
+  td::before {
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  td:nth-child(1)::before {
+    content: "項目";
+  }
+
+  td:nth-child(2)::before {
+    content: "金額";
+  }
+
+  td:nth-child(3)::before {
+    content: "計算式";
+  }
+
+  td:nth-child(4)::before {
+    content: "備考";
+  }
+
+  td:nth-child(2) {
+    text-align: left;
+    white-space: normal;
+  }
+
+  .source-row td {
+    border-top: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .source-row td:first-child {
+    border-left: 0;
+    border-top: 5px solid #d58a20;
+  }
+
+  .source-badge {
+    display: block;
+    width: fit-content;
+    margin: 4px 0 0;
   }
 }

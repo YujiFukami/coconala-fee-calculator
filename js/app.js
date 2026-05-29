@@ -4,10 +4,31 @@
   const Calculator = window.CoconalaCalculator;
   const state = {
     mode: "fromEstimate",
-    modeAmounts: {
-      fromEstimate: "50,000",
-      fromBudget: "200,000",
-      fromNet: "150,000"
+    modeInputs: {
+      fromEstimate: {
+        amount: "50,000",
+        taxMode: "taxable",
+        buyerFeeRate: "5.5",
+        sellerFeeRate: "22",
+        taxRate: "10",
+        roundingMode: "round"
+      },
+      fromBudget: {
+        amount: "200,000",
+        taxMode: "taxable",
+        buyerFeeRate: "5.5",
+        sellerFeeRate: "22",
+        taxRate: "10",
+        roundingMode: "round"
+      },
+      fromNet: {
+        amount: "150,000",
+        taxMode: "taxable",
+        buyerFeeRate: "5.5",
+        sellerFeeRate: "22",
+        taxRate: "10",
+        roundingMode: "round"
+      }
     },
     result: null,
     sellerExplanation: "",
@@ -77,20 +98,18 @@
 
     refs.form.addEventListener("input", (event) => {
       if (!event.target.matches("input")) return;
-      if (event.target === refs.amountInput) {
-        state.modeAmounts[state.mode] = refs.amountInput.value;
-      }
+      saveCurrentModeInputs();
       calculateAndRender();
     });
 
     document.querySelectorAll(".mode-tab").forEach((button) => {
       button.addEventListener("click", () => {
-        state.modeAmounts[state.mode] = refs.amountInput.value;
+        saveCurrentModeInputs();
         state.mode = button.dataset.mode;
         document.querySelectorAll(".mode-tab").forEach((tab) => {
           tab.classList.toggle("is-active", tab === button);
         });
-        refs.amountInput.value = state.modeAmounts[state.mode];
+        restoreModeInputs(state.mode);
         updateModeText();
         calculateAndRender();
       });
@@ -114,12 +133,12 @@
 
   function resetForm() {
     refs.amountInput.value = modeMeta[state.mode].defaultAmount;
-    state.modeAmounts[state.mode] = refs.amountInput.value;
     refs.form.taxMode.value = "taxable";
     refs.form.buyerFeeRate.value = "5.5";
     refs.form.sellerFeeRate.value = "22";
     refs.form.taxRate.value = "10";
     refs.form.roundingMode.value = "round";
+    saveCurrentModeInputs();
     calculateAndRender();
   }
 
@@ -141,7 +160,7 @@
   function handleNumberAction(action) {
     if (action === "clear") {
       refs.amountInput.value = "";
-      state.modeAmounts[state.mode] = "";
+      saveCurrentModeInputs();
       calculateAndRender();
       return;
     }
@@ -151,7 +170,7 @@
       const nextRaw = raw.slice(0, -1);
       if (nextRaw === "") {
         refs.amountInput.value = "";
-        state.modeAmounts[state.mode] = "";
+        saveCurrentModeInputs();
       } else {
         setAmountValue(Number(nextRaw));
       }
@@ -161,7 +180,28 @@
 
   function setAmountValue(value) {
     refs.amountInput.value = Number(value).toLocaleString("ja-JP");
-    state.modeAmounts[state.mode] = refs.amountInput.value;
+    saveCurrentModeInputs();
+  }
+
+  function saveCurrentModeInputs() {
+    state.modeInputs[state.mode] = {
+      amount: refs.amountInput.value,
+      taxMode: refs.form.taxMode.value,
+      buyerFeeRate: refs.form.buyerFeeRate.value,
+      sellerFeeRate: refs.form.sellerFeeRate.value,
+      taxRate: refs.form.taxRate.value,
+      roundingMode: refs.form.roundingMode.value
+    };
+  }
+
+  function restoreModeInputs(mode) {
+    const inputs = state.modeInputs[mode];
+    refs.amountInput.value = inputs.amount;
+    refs.form.taxMode.value = inputs.taxMode;
+    refs.form.buyerFeeRate.value = inputs.buyerFeeRate;
+    refs.form.sellerFeeRate.value = inputs.sellerFeeRate;
+    refs.form.taxRate.value = inputs.taxRate;
+    refs.form.roundingMode.value = inputs.roundingMode;
   }
 
   function updateModeText() {
