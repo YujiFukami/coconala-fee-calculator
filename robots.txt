@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://coconala-fee-calculator.vercel.app/sitemap.xml
+

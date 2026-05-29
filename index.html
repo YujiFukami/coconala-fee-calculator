@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ココナラ見積・手取り・予算逆算ツール</title>
   <meta name="description" content="ココナラ通常サービス向けの見積額、購入者支払総額、出品者手取りを参考計算するWebツールです。">
+  <link rel="canonical" href="https://coconala-fee-calculator.vercel.app/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ココナラ見積・手取り・予算逆算ツール">
+  <meta property="og:title" content="ココナラ見積・手取り・予算逆算ツール">
+  <meta property="og:description" content="ココナラ通常サービス向けの見積額、購入者支払総額、出品者手取りを参考計算するWebツールです。">
+  <meta property="og:url" content="https://coconala-fee-calculator.vercel.app/">
+  <meta property="og:image" content="https://coconala-fee-calculator.vercel.app/LP%E7%94%BB%E5%83%8F.png">
+  <meta name="twitter:card" content="summary">
   <link rel="icon" type="image/png" href="ファビコン用.png">
   <link rel="apple-touch-icon" href="ファビコン用.png">
   <link rel="stylesheet" href="styles.css">
@@ -30,6 +38,7 @@
       <button class="mode-tab is-active" type="button" data-mode="fromEstimate">見積額から計算</button>
       <button class="mode-tab" type="button" data-mode="fromBudget">予算から逆算</button>
       <button class="mode-tab" type="button" data-mode="fromNet">手取りから逆算</button>
+      <a class="mode-tab" href="version.html">バージョン情報</a>
     </nav>
 
     <main>
@@ -44,12 +53,12 @@
               <span>円</span>
             </div>
             <div class="amount-tools" aria-label="金額を増減">
-              <button type="button" data-amount-delta="-10000">-1万</button>
-              <button type="button" data-amount-delta="-1000">-千</button>
-              <button type="button" data-amount-delta="-100">-百</button>
-              <button type="button" data-amount-delta="100">+百</button>
-              <button type="button" data-amount-delta="1000">+千</button>
-              <button type="button" data-amount-delta="10000">+1万</button>
+              <button type="button" data-amount-delta="-10000">-10,000</button>
+              <button type="button" data-amount-delta="-1000">-1,000</button>
+              <button type="button" data-amount-delta="-100">-100</button>
+              <button type="button" data-amount-delta="100">+100</button>
+              <button type="button" data-amount-delta="1000">+1,000</button>
+              <button type="button" data-amount-delta="10000">+10,000</button>
             </div>
             <div class="number-pad" aria-label="数字入力">
               <button type="button" data-digit="1">1</button>

@@ -17,6 +17,9 @@ https://coconala-fee-calculator.vercel.app/
 ## ファイル構成
 
 - `index.html`: 画面構造
+- `version.html`: バージョン情報と変更履歴
+- `robots.txt`: クロール許可とサイトマップ位置の通知
+- `sitemap.xml`: Google Search Consoleなどへ送信するURL一覧
 - `styles.css`: レイアウトと見た目
 - `js/calculator.js`: 計算ロジック
 - `js/app.js`: 画面操作と描画

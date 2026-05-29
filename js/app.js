@@ -102,7 +102,7 @@
       calculateAndRender();
     });
 
-    document.querySelectorAll(".mode-tab").forEach((button) => {
+    document.querySelectorAll(".mode-tab[data-mode]").forEach((button) => {
       button.addEventListener("click", () => {
         saveCurrentModeInputs();
         state.mode = button.dataset.mode;
